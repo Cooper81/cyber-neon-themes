@@ -1,0 +1,88 @@
+# Neon – Glas-Karten mit Neon-Glow für Home Assistant
+# Halbtransparente, unscharfe Glas-Karten, Cyan/Magenta-Leuchtrand, Hover-Glow, dunkler Farbverlauf.
+# Benötigt: card-mod (HACS).
+# Akzentfarben unten unter "Akzent" ändern.
+
+Neon:
+  card-mod-theme: Neon
+
+  # ---------- Akzent ----------
+  neon-accent-rgb: '0, 240, 255'        # Cyan    – Rahmen
+  neon-accent2-rgb: '255, 0, 200'       # Magenta – Glow / Überschriften
+  neon-accent3-rgb: '160, 90, 255'      # Violett – Tiefe
+
+  # ---------- Grundfarben ----------
+  primary-color: 'rgb(0, 240, 255)'
+  accent-color: 'rgb(255, 0, 200)'
+  dark-primary-color: 'rgb(0, 190, 210)'
+  light-primary-color: 'rgb(128, 248, 255)'
+  primary-text-color: 'rgba(240, 243, 255, 0.96)'
+  secondary-text-color: 'rgba(220, 225, 255, 0.75)'
+  text-primary-color: 'rgba(240, 243, 255, 0.96)'
+  disabled-text-color: 'rgba(220, 225, 255, 0.45)'
+  divider-color: 'rgba(255, 255, 255, 0.12)'
+  state-icon-color: 'rgb(0, 240, 255)'
+  primary-background-color: '#06041a'
+  secondary-background-color: '#0c0a2a'
+  card-background-color: '#0c0a2a'
+  app-header-background-color: 'rgba(6, 4, 26, 0.6)'
+  app-header-text-color: 'rgba(240, 243, 255, 0.96)'
+  sidebar-background-color: '#07051e'
+  sidebar-text-color: 'rgba(220, 225, 255, 0.8)'
+  sidebar-icon-color: 'rgba(0, 240, 255, 0.75)'
+  sidebar-selected-icon-color: 'rgb(255, 0, 200)'
+  sidebar-selected-text-color: 'rgb(255, 0, 200)'
+  switch-checked-color: 'rgb(0, 240, 255)'
+  scrollbar-thumb-color: 'rgba(160, 90, 255, 0.4)'
+
+  # Hintergrund: dunkler Verlauf mit Magenta/Cyan/Violett/Blau-Leuchten
+  lovelace-background: 'radial-gradient(circle at 12% 18%, rgba(255,0,200,0.28), transparent 38%) fixed, radial-gradient(circle at 88% 22%, rgba(0,240,255,0.25), transparent 40%) fixed, radial-gradient(circle at 70% 85%, rgba(140,60,255,0.30), transparent 45%) fixed, radial-gradient(circle at 18% 88%, rgba(0,120,255,0.22), transparent 40%) fixed, linear-gradient(160deg, #06041a 0%, #0c0a2a 45%, #040211 100%) fixed'
+
+  # ---------- Karten (native Variablen) ----------
+  ha-card-background: 'linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02))'
+  ha-card-border-radius: '20px'
+  ha-card-border-width: '1px'
+  ha-card-border-color: 'rgba(0, 240, 255, 0.5)'
+  ha-card-box-shadow: '0 0 6px rgba(0,240,255,0.5), 0 0 20px rgba(255,0,200,0.22), inset 0 0 12px rgba(0,240,255,0.08), 0 10px 28px rgba(0,0,0,0.45)'
+
+  # ---------- Karten (card-mod) ----------
+  card-mod-card: |
+    ha-card {
+      backdrop-filter: blur(16px) saturate(170%);
+      -webkit-backdrop-filter: blur(16px) saturate(170%);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    ha-card:hover {
+      box-shadow: 0 0 10px rgba(var(--neon-accent-rgb), 0.85), 0 0 32px rgba(var(--neon-accent2-rgb), 0.45), inset 0 0 16px rgba(var(--neon-accent-rgb), 0.16), 0 10px 28px rgba(0,0,0,0.5);
+      transform: translateY(-2px);
+    }
+
+    /* Überschriften (Heading-Karte) */
+    :host(hui-heading-card) ha-card {
+      --primary-text-color: rgb(var(--neon-accent2-rgb));
+      --secondary-text-color: rgba(var(--neon-accent2-rgb), 0.75);
+      background: none;
+      box-shadow: none;
+      border: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      transform: none;
+      letter-spacing: 1px;
+      text-shadow: 0 0 6px rgba(var(--neon-accent2-rgb), 0.9), 0 0 18px rgba(var(--neon-accent2-rgb), 0.5);
+    }
+    /* Text-Karten (z. B. Seitentitel) ohne Kasten */
+    ha-card.text-only,
+    :host(.text-only) ha-card {
+      background: none;
+      box-shadow: none;
+      border: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      transform: none;
+      letter-spacing: 2px;
+      text-shadow: 0 0 8px rgba(var(--neon-accent2-rgb), 0.9), 0 0 24px rgba(var(--neon-accent-rgb), 0.6);
+    }
+
+  modes:
+    dark:
+      app-theme-color: '#06041a'

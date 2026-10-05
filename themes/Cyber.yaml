@@ -1,0 +1,110 @@
+# Cyber – Cyberpunk-HUD-Design für Home Assistant
+# Abgeschrägte Ecken, Scanlines, laufender Scan-Balken, Orbitron-Schrift, Raster-Hintergrund.
+# Benötigt: card-mod (HACS) + Dashboard-Ressource Google Fonts (Orbitron / Share Tech Mono).
+# Akzentfarben unten unter "Akzent" ändern.
+
+Cyber:
+  card-mod-theme: Cyber
+
+  # ---------- Akzent ----------
+  cyber-accent-rgb: '0, 255, 234'       # Cyan  – Rahmen, Scan-Balken
+  cyber-accent2-rgb: '255, 0, 170'      # Pink  – Überschriften-Schatten
+  cyber-accent3-rgb: '252, 238, 10'     # Gelb  – Seitentitel
+
+  # ---------- Grundfarben ----------
+  primary-color: 'rgb(0, 255, 234)'
+  accent-color: 'rgb(255, 0, 170)'
+  dark-primary-color: 'rgb(0, 200, 184)'
+  light-primary-color: 'rgb(128, 255, 245)'
+  primary-text-color: '#eef3ff'
+  secondary-text-color: 'rgba(215, 225, 255, 0.82)'
+  text-primary-color: '#eef3ff'
+  disabled-text-color: 'rgba(215, 225, 255, 0.45)'
+  divider-color: 'rgba(0, 255, 234, 0.25)'
+  state-icon-color: 'rgb(0, 255, 234)'
+  state-active-color: 'rgb(252, 238, 10)'
+  primary-background-color: '#05010f'
+  secondary-background-color: '#0c0420'
+  card-background-color: '#0c0420'
+  app-header-background-color: 'rgba(5, 1, 15, 0.85)'
+  app-header-text-color: 'rgb(0, 255, 234)'
+  sidebar-background-color: '#07021a'
+  sidebar-text-color: 'rgba(215, 225, 255, 0.82)'
+  sidebar-icon-color: 'rgba(0, 255, 234, 0.75)'
+  sidebar-selected-icon-color: 'rgb(255, 0, 170)'
+  sidebar-selected-text-color: 'rgb(255, 0, 170)'
+  switch-checked-color: 'rgb(0, 255, 234)'
+  scrollbar-thumb-color: 'rgba(0, 255, 234, 0.35)'
+
+  # Hintergrund: Neon-Raster mit Pink/Cyan-Leuchten
+  lovelace-background: 'linear-gradient(rgba(0,255,234,0.07) 1px, transparent 1px) 0 0 / 42px 42px fixed, linear-gradient(90deg, rgba(255,0,170,0.07) 1px, transparent 1px) 0 0 / 42px 42px fixed, radial-gradient(ellipse at 50% 115%, rgba(255,0,170,0.38), transparent 60%) fixed, radial-gradient(ellipse at 50% -15%, rgba(0,255,234,0.28), transparent 55%) fixed, #05010f'
+
+  # ---------- Karten (native Variablen) ----------
+  ha-card-background: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px), linear-gradient(135deg, rgba(12,4,32,0.92), rgba(28,0,48,0.85))'
+  ha-card-border-radius: '0px'
+  ha-card-border-width: '1px'
+  ha-card-border-color: 'rgba(0, 255, 234, 0.95)'
+  ha-card-box-shadow: 'inset 0 0 22px rgba(0,255,234,0.28), inset 0 0 2px rgba(0,255,234,0.9)'
+
+  # ---------- Karten (card-mod) ----------
+  card-mod-card: |
+    ha-card {
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      font-family: Orbitron, "Share Tech Mono", monospace;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: none;
+    }
+    /* Scan-Balken: bleibt immer innerhalb der Karte (left 0 / right 0),
+       nur der Lichtpunkt wandert per background-position */
+    ha-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-image: linear-gradient(90deg, transparent, rgb(var(--cyber-accent-rgb)), transparent);
+      background-size: 45% 100%;
+      background-repeat: no-repeat;
+      background-position: -82% 0;
+      animation: cyberscan 3.5s linear infinite;
+      pointer-events: none;
+      z-index: 2;
+    }
+    @keyframes cyberscan { from { background-position: -82% 0; } to { background-position: 182% 0; } }
+
+    /* Überschriften (Heading-Karte) */
+    :host(hui-heading-card) ha-card {
+      --primary-text-color: rgb(var(--cyber-accent-rgb));
+      --secondary-text-color: rgba(var(--cyber-accent-rgb), 0.75);
+      background: none;
+      box-shadow: none;
+      border: none;
+      border-bottom: 1px solid rgba(var(--cyber-accent-rgb), 0.6);
+      clip-path: none;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 0 0 4px rgb(var(--cyber-accent-rgb)), 0 0 14px rgba(var(--cyber-accent2-rgb), 0.6);
+    }
+    /* Text-Karten (z. B. Seitentitel) ohne Kasten, mit Glitch-Schatten */
+    ha-card.text-only,
+    :host(.text-only) ha-card {
+      background: none;
+      box-shadow: none;
+      border: none;
+      clip-path: none;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: 2px 0 rgba(var(--cyber-accent2-rgb), 0.9), -2px 0 rgba(var(--cyber-accent-rgb), 0.9), 0 0 18px rgba(var(--cyber-accent3-rgb), 0.5);
+    }
+    :host(hui-heading-card) ha-card::after,
+    ha-card.text-only::after,
+    :host(.text-only) ha-card::after {
+      content: none;
+    }
+
+  modes:
+    dark:
+      app-theme-color: '#05010f'
