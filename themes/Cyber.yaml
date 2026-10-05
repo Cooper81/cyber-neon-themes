@@ -1,15 +1,24 @@
 # Cyber – Cyberpunk-HUD-Design für Home Assistant
 # Abgeschrägte Ecken, Scanlines, laufender Scan-Balken, Orbitron-Schrift, Raster-Hintergrund.
-# Benötigt: card-mod (HACS) + Dashboard-Ressource Google Fonts (Orbitron / Share Tech Mono).
-# Akzentfarben unten unter "Akzent" ändern.
+# Bereiche (Sections) werden automatisch bunt: Cyan / Pink / Gelb / Violett (siehe unten).
+# Benötigt: card-mod (HACS, als frontend: extra_module_url geladen)
+#           + Dashboard-Ressource Google Fonts (Orbitron / Share Tech Mono).
+# Farben unten unter "Farben" ändern.
 
 Cyber:
   card-mod-theme: Cyber
 
-  # ---------- Akzent ----------
-  cyber-accent-rgb: '0, 255, 234'       # Cyan  – Rahmen, Scan-Balken
-  cyber-accent2-rgb: '255, 0, 170'      # Pink  – Überschriften-Schatten
-  cyber-accent3-rgb: '252, 238, 10'     # Gelb  – Seitentitel
+  # ---------- Farben ----------
+  # Reihenfolge der Bereichsfarben (RGB ohne Klammern)
+  cyber-color-1: '0, 255, 234'      # Cyan
+  cyber-color-2: '255, 0, 170'      # Pink
+  cyber-color-3: '252, 238, 10'     # Gelb
+  cyber-color-4: '180, 0, 255'      # Violett
+  # Standardfarbe für Karten außerhalb von Bereichen (z. B. Popups) und in Safari/iOS/Firefox
+  cyber-accent-rgb: '0, 255, 234'
+  # Glitch-Schatten der Seitentitel
+  cyber-accent2-rgb: '255, 0, 170'
+  cyber-accent3-rgb: '252, 238, 10'
 
   # ---------- Grundfarben ----------
   primary-color: 'rgb(0, 255, 234)'
@@ -39,16 +48,35 @@ Cyber:
   # Hintergrund: Neon-Raster mit Pink/Cyan-Leuchten
   lovelace-background: 'linear-gradient(rgba(0,255,234,0.07) 1px, transparent 1px) 0 0 / 42px 42px fixed, linear-gradient(90deg, rgba(255,0,170,0.07) 1px, transparent 1px) 0 0 / 42px 42px fixed, radial-gradient(ellipse at 50% 115%, rgba(255,0,170,0.38), transparent 60%) fixed, radial-gradient(ellipse at 50% -15%, rgba(0,255,234,0.28), transparent 55%) fixed, #05010f'
 
-  # ---------- Karten (native Variablen) ----------
+  # ---------- Karten (native Variablen, Fallback) ----------
   ha-card-background: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px), linear-gradient(135deg, rgba(12,4,32,0.92), rgba(28,0,48,0.85))'
   ha-card-border-radius: '0px'
   ha-card-border-width: '1px'
   ha-card-border-color: 'rgba(0, 255, 234, 0.95)'
   ha-card-box-shadow: 'inset 0 0 22px rgba(0,255,234,0.28), inset 0 0 2px rgba(0,255,234,0.9)'
 
+  # ---------- Bereichsfarben ----------
+  # Automatisch: Bereich 1, 2, 3, 4 (Sections) bzw. Spalte 1–4 (Masonry)
+  # bekommen nacheinander cyber-color-1 … 4, danach beginnt es von vorn.
+  # (Chrome/Edge/Android-App. Safari/iOS/Firefox: alle Karten in cyber-accent-rgb.)
+  # Einzelne Karte umfärben (gilt in allen Browsern):
+  #   card_mod:
+  #     style: "ha-card { --cyber-sec-rgb: 40, 120, 255; }"
+
   # ---------- Karten (card-mod) ----------
   card-mod-card: |
+    /* Automatische Bereichsfarben: Bereiche (Sections) und Spalten (Masonry) */
+    :host-context(.section:nth-child(4n+1)), :host-context(.column:nth-child(4n+1)) { --cyber-sec-rgb: var(--cyber-color-1); }
+    :host-context(.section:nth-child(4n+2)), :host-context(.column:nth-child(4n+2)) { --cyber-sec-rgb: var(--cyber-color-2); }
+    :host-context(.section:nth-child(4n+3)), :host-context(.column:nth-child(4n+3)) { --cyber-sec-rgb: var(--cyber-color-3); }
+    :host-context(.section:nth-child(4n+4)), :host-context(.column:nth-child(4n+4)) { --cyber-sec-rgb: var(--cyber-color-4); }
     ha-card {
+      --cy: var(--cyber-sec-rgb, var(--cyber-accent-rgb));
+      /* auch innere Elemente (z. B. Mushroom-Chips) bekommen die Bereichsfarbe */
+      --ha-card-border-color: rgba(var(--cy), 0.95);
+      --ha-card-box-shadow: inset 0 0 22px rgba(var(--cy), 0.28), inset 0 0 2px rgba(var(--cy), 0.9);
+      border-color: rgba(var(--cy), 0.95);
+      box-shadow: inset 0 0 22px rgba(var(--cy), 0.28), inset 0 0 2px rgba(var(--cy), 0.9);
       clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
       font-family: Orbitron, "Share Tech Mono", monospace;
       letter-spacing: 0.5px;
@@ -65,7 +93,7 @@ Cyber:
       left: 0;
       right: 0;
       height: 2px;
-      background-image: linear-gradient(90deg, transparent, rgb(var(--cyber-accent-rgb)), transparent);
+      background-image: linear-gradient(90deg, transparent, rgb(var(--cy)), transparent);
       background-size: 45% 100%;
       background-repeat: no-repeat;
       background-position: -82% 0;
@@ -75,18 +103,18 @@ Cyber:
     }
     @keyframes cyberscan { from { background-position: -82% 0; } to { background-position: 182% 0; } }
 
-    /* Überschriften (Heading-Karte) */
+    /* Überschriften (Heading-Karte) in der Bereichsfarbe */
     :host(hui-heading-card) ha-card {
-      --primary-text-color: rgb(var(--cyber-accent-rgb));
-      --secondary-text-color: rgba(var(--cyber-accent-rgb), 0.75);
+      --primary-text-color: rgb(var(--cy));
+      --secondary-text-color: rgba(var(--cy), 0.75);
       background: none;
       box-shadow: none;
       border: none;
-      border-bottom: 1px solid rgba(var(--cyber-accent-rgb), 0.6);
+      border-bottom: 1px solid rgba(var(--cy), 0.6);
       clip-path: none;
       text-transform: uppercase;
       letter-spacing: 3px;
-      text-shadow: 0 0 4px rgb(var(--cyber-accent-rgb)), 0 0 14px rgba(var(--cyber-accent2-rgb), 0.6);
+      text-shadow: 0 0 4px rgb(var(--cy)), 0 0 14px rgba(var(--cy), 0.6);
     }
     /* Text-Karten (z. B. Seitentitel) ohne Kasten, mit Glitch-Schatten */
     ha-card.text-only,
