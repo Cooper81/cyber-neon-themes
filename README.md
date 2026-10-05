@@ -9,6 +9,16 @@ Zwei dunkle Designs für Home Assistant Dashboards:
 
 Beide Designs stylen alle Karten automatisch – im Dashboard selbst ist kein `card_mod` nötig.
 
+### Cyber
+
+![Cyber](images/cyber.png)
+
+### Neon
+
+![Neon](images/neon.png)
+
+*Vorschaubilder sind Mockups mit Beispieldaten.*
+
 ## Voraussetzungen
 
 1. **[card-mod](https://github.com/thomasloven/lovelace-card-mod)** (über HACS → Frontend installieren)
