@@ -1,59 +1,53 @@
-# Cyber ​​& Neon Themes for Home Assistant
+# Cyber & Neon Themes für Home Assistant
 
-Two dark themes for Home Assistant dashboards:
+Zwei dunkle Designs für Home Assistant Dashboards:
 
-| Theme | Look |
+| Design | Look |
 |---|---|
-| **Cyber** | Cyberpunk HUD: beveled corners, scanlines, moving scan bar, Orbitron font, neon grid background (cyan / pink / yellow) |
-| **Neon** | Glass cards with blur, cyan border with magenta glow, hover effect, dark gradient background (cyan / magenta / violet) |
+| **Cyber** | Cyberpunk-HUD: abgeschrägte Ecken, Scanlines, laufender Scan-Balken, Orbitron-Schrift, Neon-Raster im Hintergrund (Cyan / Pink / Gelb) |
+| **Neon** | Glas-Karten mit Unschärfe, Cyan-Rand mit Magenta-Glow, Hover-Effekt, dunkler Farbverlauf im Hintergrund (Cyan / Magenta / Violett) |
 
-Both themes automatically style all cards—no `card_mod` is required within the dashboard itself. ### Cyber
+Beide Designs stylen alle Karten automatisch – im Dashboard selbst ist kein `card_mod` nötig.
 
-![Cyber](images/cyber.png)
+## Voraussetzungen
 
-### Neon
-
-![Neon](images/neon.png)
-
-*Preview images are mockups using sample data.*
-
-## Prerequisites
-
-1. **[card-mod](https://github.com/thomasloven/lovelace-card-mod)** (install via HACS → Frontend)
-2. For **Cyber**: the *Orbitron* font as a dashboard resource
-*Settings → Dashboards → ⋮ → Resources → Add Resource*
-- URL: `https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Share+Tech+Mono&display=swap`
-- Type: **Stylesheet**
-3. Themes from the `themes` folder must be loaded in `configuration.yaml`:
+1. **[card-mod](https://github.com/thomasloven/lovelace-card-mod)** (über HACS → Frontend installieren)
+2. Für **Cyber**: die Schrift *Orbitron* als Dashboard-Ressource
+   *Einstellungen → Dashboards → ⋮ → Ressourcen → Ressource hinzufügen*
+   - URL: `https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Share+Tech+Mono&display=swap`
+   - Typ: **Stylesheet**
+3. In der `configuration.yaml` müssen Designs aus dem Ordner `themes` geladen werden:
 
 ```yaml
 frontend:
-themes: !include_dir_merge_named themes
+  themes: !include_dir_merge_named themes
 ```
 
-## Installation via HACS
+## Installation über HACS
 
-1. **HACS → ⋮ (top right) → Custom repositories**
-2. Repository: `https://github.com/Cooper81/cyber-neon-themes` – Type: **Theme** → Add
-3. Search for **Cyber ​​& Neon Themes** in HACS → **Download**
-4. Run **Developer Tools → Actions → `frontend.reload_themes`** (or restart Home Assistant)
-5. **Profile → Theme** → Select `Cyber` or `Neon`
+1. **HACS → ⋮ (oben rechts) → Benutzerdefinierte Repositories**
+2. Repository: `https://github.com/Cooper81/cyber-neon-themes` – Typ: **Theme** → Hinzufügen
+3. In HACS nach **Cyber & Neon Themes** suchen → **Herunterladen**
+4. **Entwicklerwerkzeuge → Aktionen → `frontend.reload_themes`** ausführen (oder Home Assistant neu starten)
+5. **Profil → Design** → `Cyber` oder `Neon` wählen
 
-## Manual Installation
+## Manuelle Installation
 
-Copy the files from `themes/` into the `config/themes/` folder of your Home Assistant installation and run `frontend.reload_themes`. ## Customization
+Die Dateien aus `themes/` in den Ordner `config/themes/` deiner Home-Assistant-Installation kopieren und `frontend.reload_themes` ausführen.
 
-The accent colors are defined as RGB values ​​at the top of each file:
+## Anpassen
+
+Die Akzentfarben stehen oben in jeder Datei als RGB-Werte:
 
 ```yaml
-cyber-accent-rgb: '0, 255, 234'    # Borders, scan bars
-cyber-accent2-rgb: '255, 0, 170'   # Heading shadows
-cyber-accent3-rgb: '252, 238, 10'  # Page titles
+cyber-accent-rgb: '0, 255, 234'    # Rahmen, Scan-Balken
+cyber-accent2-rgb: '255, 0, 170'   # Überschriften-Schatten
+cyber-accent3-rgb: '252, 238, 10'  # Seitentitel
 ```
 
-Individual cards can still be overridden using `card_mod` – the themes intentionally do not use `!important`.
+Einzelne Karten können weiterhin per `card_mod` überschrieben werden – die Designs setzen bewusst kein `!important`.
 
-## Notes
+## Hinweise
 
-- A theme applies per device/browser (profile setting) or to individual views via `theme: Cyber` within the view configuration.
-- Views or cards with their own fixed `theme` or custom `card_mod` styling are not affected by the theme.
+- Ein Design gilt pro Gerät/Browser (Profil-Einstellung) oder für einzelne Ansichten über `theme: Cyber` in der Ansicht.
+- Ansichten oder Karten mit eigenem festen `theme` bzw. eigenem `card_mod`-Styling werden vom Design nicht verändert.
