@@ -9,11 +9,11 @@ Two dark themes for Home Assistant dashboards:
 
 Both themes automatically style all cards—no `card_mod` is required within the dashboard itself. ### Cyber
 
-![Cyber](images/cyber.png)
+![Cyber](https://raw.githubusercontent.com/Cooper81/cyber-neon-themes/main/images/cyber.png)
 
 ### Neon
 
-![Neon](images/neon.png)
+![Neon](https://raw.githubusercontent.com/Cooper81/cyber-neon-themes/main/images/neon.png)
 
 *Preview images are mockups using sample data.*
 
@@ -41,7 +41,7 @@ themes: !include_dir_merge_named themes
 
 ## Manual Installation
 
-Copy the files from `themes/` into the `config/themes/` folder of your Home Assistant installation and run `frontend.reload_themes`. ## Customization
+Copy the files from `themes/` to the `config/themes/` folder of your Home Assistant installation and run `frontend.reload_themes`. ## Customization
 
 The accent colors are defined as RGB values ​​at the top of each file:
 
